@@ -1,0 +1,81 @@
+
+<% if logged_in? %>
+  <script type="text/javascript">
+
+    $.getJSON('<%= charts_live_tracked_path %>', function(data) {
+        setTimeout(function() {
+          $("#tracked-cloud").
+            jQCloud(data, {
+            autoResize: true,
+          });
+        }, 50);
+    });
+  </script>
+
+  <div class="container-fluid row">
+    <div class="col-md-6 large-info col-md-offset-1 col-lg-4 col-lg-offset-1">
+      <h3 class="text-center feed-header">Your Track </h3>
+      <%= render 'shared/feed' %>
+    </div>
+    <div class="col-md-5 col-md-offset-0 col-lg-5 col-lg-offset-1">
+      <aside class="large-info">
+        <h4 class="text-center" style="padding-top:50px">
+        <span class="fa fa-globe" style="color:#5555bb;"> 
+        </span> 
+        Top active topics worldwide
+       </h4>
+       <h5 class="text-center">(<%=@total_live_users%> Active Users) </h5>
+
+        <%= pie_chart charts_active_users_path, height: '400px', library: {pieHole: 0.4, backgroundColor:'transparent', legend:{ position:'right'}}, colors: [ '34BC45', '56CB67', '78CB89', '89BB9A',  '204760', '3b6883', '6799B7', '89AAE9'] %>
+
+      </aside>
+      <!-- display data in and word cloud -->
+      <aside class="large-info" style="padding:50px">
+        <h4 class="text-center">Top active topics from your track</h4>
+        <div id="tracked-cloud" style="height:300px"/>
+        </div>
+      </aside>
+
+     
+    </div>
+  
+  </div>
+<% else %>
+
+
+  <%= stylesheet_link_tag :landing_pages %>
+  <section class="text-center text-main">
+    <h1>Welcome to - hour<i class="fa fa-clock-o"> </i>ma</h1>
+
+    <h2>
+      Find out exactly how productive you are.
+      <%= link_to "Learn More", help_path %>
+    </h2>
+    <h2>
+        <a href="#global" onclick="visible('global');"> 
+          <span class="fa fa-globe" style="color:#5555bb; font-size:50px;"> </span>
+        </a>
+    </h2>
+  </section>
+    <section style="padding-bottom:100px">
+      <div id="global" class="row" style=" visibility:hidden;"> 
+        <div class="intense-box col-lg-6 col-lg-offset-3">
+          <h4 class="text-center" > Open Beta</h4>
+          <h4 class="text-center" > Trending Worldwide (<%=@total_live_users%> Active Users)</h4>
+          <%= pie_chart charts_active_users_path, colors: [ '204760', '3b6883', '6799B7', '89AAE9', '89899A', 'ABABBC', 'BCBCCD', 'CDCDEF'], height: "400px", library: {pieHole: 0.5, backgroundColor:'transparent'} %>
+        </div>
+      </div>
+    </section>
+<% end %>
+
+<script type="text/javascript">
+
+  function visible(id) {
+    var item = document.getElementById(id);
+    if(item.style.visibility == 'hidden')
+      item.style.visibility = 'visible';
+    else
+      item.style.visibility = 'hidden';
+  }
+
+</script>

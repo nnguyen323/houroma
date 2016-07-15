@@ -1,0 +1,72 @@
+<% provide(:title, @title.capitalize) %> 
+  <section class="row container">
+     <div class ="text-center large-info col-md-4 col-md-offset-4 col-xs-12" style="border-radius:30px">
+
+       <h2> <%= @user.username.capitalize %>  </h2>
+       <%= link_to (@user) do %>
+         <% if @user.picture? %>
+           <%= image_tag @user.picture.thumb.url, style:"border-radius:100%", class:"large-preview" %>
+         <% else %>
+           <%= image_tag 'default-thumb-120.png', class:"large-preview" %>
+         <% end %>    
+      <% end %>    
+      <div>
+        <h4> <b>Topics:</b> <%= @user.activities.count %> </h4>
+        <%= link_to "View Profile", @user %>
+      </div>
+      <div style="padding-top:20px" class="col-xs-6 col-xs-offset-3">
+        <%= render 'track_form' if logged_in? %>
+      </div>
+      <div class="col-xs-12"><hr></div>
+
+      <div class="col-xs-6 text-center">
+        <a href="<%= trackers_user_path(@user) %>" class="btn btn-post faa-parent animated-hover">
+          <i class="fa fa-star faa-passing faa-slow"> </i>
+          <strong id="trackers">
+            <%= @user.trackers.count %>
+          </strong>
+          Trackers
+        </a>
+      </div>
+
+      <div class="col-xs-6 text-center">
+        <a href="<%= tracking_user_path(@user) %>" class="btn btn-post faa-parent animated-hover">
+          <i class="fa fa-paw faa-passing faa-slow"> </i>
+          <strong id="trackers" class="stat">
+            <%= @user.tracking.count %>
+          </strong>
+          Tracking
+        </a>
+      </div>
+    </div>
+</section>
+
+
+<section class="row container">
+      
+  <% if @users.any? %>
+        <div class="col-md-8 col-md-offset-2 large-info">
+
+            <h3 class="text-center track-header" style="padding-bottom:10px"> <%= @title.capitalize %>  </h3>
+
+
+              <ul class="users track activities">
+                <% @users.each do |item| %>
+                  <% if item.active? %>
+                     <%= render item.activity %>
+                  <% else %>
+                     <div class="unactive-activity" style="padding-right:15px">
+                     <%= render item %> 
+                     </div>
+                  <% end %>
+                <% end %>
+              </ul>
+              <hr style="margin:0 -15px 0 -15px;">
+              <div class="text-center">
+                <%= will_paginate page_links: false %>
+              </div>
+        </div>
+       
+  <% end %>
+
+</section>

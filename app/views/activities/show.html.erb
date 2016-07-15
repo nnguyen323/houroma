@@ -1,0 +1,29 @@
+<div class="container" style="padding-bottom:150px">
+	<div class="row">
+		<div class="large-info col-md-6" style="padding-bottom:0; margin-bottom:0;">
+		<ol class="activities">
+			<%= render @activity %>
+		</ol>
+		</div>
+	</div>
+
+	<div class="large-info" style="padding-left:30px;">
+	<div class="row">
+		<h4> Comments </h4>
+		<div class="col-md-4">
+			<%= form_for(@comment = Comment.new) do |f| %>
+				<div id ="reply-field" style="margin-left:-15px">
+					<%= f.hidden_field :activity_id, value: @activity.id %>
+					<%= f.text_area :content, placeholder: "Leave a comment", autofocus: "autofocus", type:"text", class:"form-control"  %>
+					<button style="margin-top:-10px; margin-bottom:5px" class="btn btn-default btn-sm" type="submit"> Post </button>
+				</div>
+			<% end %>
+		</div>
+	</div>
+
+	<% @activity.comments.each do |comment| %>
+			<%= render comment if comment.parent_id == nil %>
+	<% end %>
+	</div>
+</div>
+

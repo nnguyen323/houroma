@@ -1,0 +1,8 @@
+<%= link_to (nest) do %>
+	<div class="nest-card col-xs-3"> 
+		<p class="nest-index-text"><%= nest.title %> </p>
+			<p class="nest-index-text" style="font-size:15px">
+				<%= pluralize(nest.birds.count, 'Person') %>
+			</p>
+	</div>
+<% end %>

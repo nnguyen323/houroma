@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+one:
+  post: orange
+  post_type: 'Activity'
+two:
+  post: tau_manifesto
+  post_type: 'Activity'
+three:
+  post: cat_video
+  post_type: 'Activity'
+four:
+  post: most_recent
+  post_type: 'Activity'
+<% 30.times do |n| %>
+rating_<%= n%>:
+  post: micropost_<%= n%> 
+  post_type: 'Activity'  
+<% end %>
+five:
+  post: ants
+  post_type: 'Activity'
+six:
+  post: zone
+  post_type: 'Activity'
+seven:
+  post: tone
+  post_type: 'Activity'
+eight:
+  post: van
+  post_type: 'Activity'

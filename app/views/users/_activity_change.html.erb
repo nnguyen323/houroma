@@ -1,0 +1,54 @@
+<div id = "activity" class="edit-form tab-pane" style="margin-top:20px">
+   <%= form_for(@user, html: { multipart: true, autocomplete: "off" }) do |f| %>
+       <%= render 'shared/error_messages', object: f.object %>
+        <div>
+           <h2 style="color:#777"> Topic Lounge Settings </h2>
+           <hr style="margin-left:-40px; margin-right:-40px">
+        </div>
+        
+        <div style="margin-left:-20px">
+          <%= f.label :activation_route, class: "checkbox inline" do %>
+            <%= f.check_box :activation_route %>
+            <span>Redirect me to topic lounges</span>
+          <% end %>
+        </div>
+
+        <div style="margin-left:-20px; padding-top:30px">
+          <div class="checkbox inline">
+            <input type="checkbox" name = "vehicle" value="Bike"> <span>Not Available In Beta</span> <br>
+            <input type="checkbox" name = "vehicle" value="Bike"> <span>Not Available In Beta</span> <br>
+            <input type="checkbox" name = "vehicle" value="Bike"> <span>Not Available In Beta</span> <br>
+            <input type="checkbox" name = "vehicle" value="Bike"> <span>Not Available In Beta</span> <br>
+          </div>
+        </div>
+
+
+
+       <div style="padding-top:40px">
+        <a href="#pass-prompt-act" data-toggle="modal">
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+        </a> 
+       </div>
+
+       <!-- modal -->
+       <div class="settings-modal modal" id="pass-prompt-act" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-content">
+                   <div class="settings-modal-header">
+                     <h4 class="settings-form-header"> Confirm Password </h4>
+                   </div>
+                   <div class="modal-body">
+                        <%= f.password_field :pass_prompt, placeholder: "Enter your current password", class: 'form-control', autofocus: "autofocus" %>
+                        <div class="row">
+                           <div class="col-sm-4 col-sm-offset-4">
+                             <%= f.submit "Confirm", class: "btn btn-success", confirm_button:'confirm_button' %>
+                           </div>
+                        </div>
+                   </div>
+                  <div class="close-modal"data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i></div>
+              </div>
+       </div>
+
+       
+       <!-- end modal -->
+   <% end %>
+</div>

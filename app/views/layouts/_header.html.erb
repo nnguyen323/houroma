@@ -1,0 +1,191 @@
+<% if logged_in? %>
+<script type="text/javascript">
+  var ready = function() {
+      var engine = new Bloodhound({
+          datumTokenizer: function(d) {
+              console.log(d);
+              return Bloodhound.tokenizers.whitespace(d.username);
+          },
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: {
+              url: '/users/autocomplete?query=%QUERY',
+              wildcard:'%QUERY'
+          }
+      });
+      var actions_engine = new Bloodhound({
+          datumTokenizer: function(d) {
+              console.log(d);
+              return Bloodhound.tokenizers.whitespace(d.content);
+          },
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: {
+              url: '/activities/autocomplete?query=%QUERY',
+              wildcard:'%QUERY'
+          }
+      });
+      var promise = engine.initialize();
+      var promise_actions = actions_engine.initialize();
+
+      $('#multiple-datasets .typeahead').typeahead({
+         highlight:false
+      },
+      {
+        name: 'user',
+        displayKey: "username",
+        source: engine.ttAdapter(),
+        templates: {
+          header: '<h4 class="users-name"><i class="fa fa-users"></i> People </h4>',
+          suggestion: function(user) {
+            if(user.picture === null) {
+              return '<div> <%= image_tag 'default-thumb-20.png', style:"margin-top:5px" %> ' + '<span>' + user.username + '</span> </div>';
+            }
+            else {
+              return '<div> <img style="margin-top:7px" src=' + user.picture + '></img>' + '<span>' + user.username + '</span> </div>';
+            }
+          }
+        }
+      },
+      {
+        name: 'activity',
+        source: actions_engine.ttAdapter(),
+        templates: {
+          header: '<h4 class="actions-name"><i class="fa fa-bicycle"></i> Topics </h4>'
+        }
+      });
+
+
+
+      $('#search-user').typeahead(null, {
+          name: 'user-nest',
+          displayKey: "username",
+          source: engine.ttAdapter(),
+          templates: {
+            suggestion: function(user) {
+              if(user.picture === null) {
+                return '<div> <%= image_tag 'default-thumb-20.png', style:"margin-top:5px" %> ' + '<span>' + user.username + '</span> </div>';
+              }
+              else {
+                return '<div> <img style="margin-top:7px" src=' + user.picture + '></img>' + '<span>' + user.username + '</span> </div>';
+              }
+            }
+          }
+      });
+  }
+  if(!header_hound_engine) {
+    $(document).ready(ready);
+    header_hound_engine = true;
+  }
+</script>
+
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top" style="-webkit-transform: translateZ(0);
+z-index: 1000;">
+
+  <div class="center-absolute">
+    <% if current_user.active? %>
+       <div class="activity_form">
+          <%= render 'shared/activity_form' %>
+        </div>
+    <% else %>
+  <button href="#activity-form" data-toggle="modal" class="btn-epic btn-outline" style="color:#222">
+    <i class="fa fa-bicycle"> Go Active </i> 
+  </button>
+    <% end %>
+  </div>
+  <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mobile-nav">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+  </div>
+  <div class="container">
+      <div class="collapse navbar-collapse" id="mobile-nav">
+        <ul class="nav navbar-nav navbar-left">
+            <li> <a href=<%= root_path %> class="header-brand brand-fade" style="font-size:25px"><i style="margin-top:-10px;" class="glyphicon glyphicon-hourglass"></i> hour<span style="color:#3498DB">Oma</span> </a> </li>
+            <% if current_user.admin? %>
+              <li> <a href="/userlist" class="anchor-link"> <button class="btn btn-danger navbar-btn"><i class="fa fa-wrench"> </i>  </button> </a></li>
+            
+            <% end %>
+            <script>
+
+            </script>
+            <li class="dropdown">
+              <button class="btn btn-info navbar-btn dropdown-toggle" id="search-icon" data-toggle="dropdown"><i class="fa fa-search"> </i>  </button>
+              <ul class="dropdown-menu" style="min-width: 250px; background:0; border:0; box-shadow:none;">
+                <li>
+                   <%= form_tag("/landing_pages/search_all", method:"get") do %>
+                      <div class="form-group" id="multiple-datasets">
+                        <div class="input-group input-group">
+                          <span class="input-group-addon"><button class="search-icon" type="submit"> <i class="fa fa-search-plus"> </i></button></span>
+                          <input name="display" id="search-all" type="text" class="form-control typeahead" placeholder="Search" \>
+                          <%= submit_tag("Search", style:"display:none") %>
+                        </div>
+                      </div>
+                   <% end %>
+                </li>
+              </ul>
+            </li> 
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+
+            <li> <a href="/mytime" class="anchor-link"> <button class="btn btn-primary navbar-btn"><i class="fa fa-clock-o"> </i> My Time </button> </a></li>
+           
+            <li> <a href="/nests" class="anchor-link"> <button class="btn btn-info navbar-btn"><i class="fa fa-users"> </i> Nests </button> </a></li>
+            <li class="dropdown">
+              <div class="btn-group">
+                <button type="button" class ="btn btn-info navbar-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded = "false";> <i class="fa fa-user"> </i>
+                Profile <span class="caret"> </span>
+                </button>
+                <!-- incase we don't this dropdown to be a button  -->
+                 <!-- <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"> </i>
+                  PROFILE <b class="caret"></b>
+                </a> -->
+                <ul class="dropdown-menu">
+                  <li><%= link_to "Profile", current_user %></li>
+                  <li><%= link_to "Tracking", tracking_user_path(current_user) %> </li>
+                  <li><%= link_to "Settings", edit_user_path(current_user) %></li>
+                  <li><%= link_to "Help", '/help' %></li>
+
+                  <li class="divider"></li>
+                  <li> <%= link_to "Log out", logout_path, method: "delete" %> </li>
+                </ul>
+              </div>
+            </li>
+        </ul>
+      </div>  
+  </div>
+</nav>
+<!-- modal for activity form -->
+<%= render 'shared/activity_modal' %>
+<%= render 'shared/img_modal' %>
+
+<% else %>
+  <nav id="mainNav" class="navbar navbar-default navbar-fixed-top" style="background:rgba(230,230,230,.9); -webkit-transform: translateZ(0);
+    z-index: 1000;"> 
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <div class="container">
+      <ul class="nav navbar-nav navbar-left">
+        <li> 
+          <a href=<%= root_path %> class="header-brand brand-fade" style="font-size:25px">
+            <i style="margin-top:-10px;" class="glyphicon glyphicon-hourglass"></i> hour<span style="color:#3498DB">Oma</span> </a> </li>
+      </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li> <a href="/help" class="anchor-link"> <button class="btn btn-success navbar-btn"> Help </button> </a></li>
+          <li> <a href="/signup" class="anchor-link"> <button class="btn btn-info navbar-btn"> Sign Up </button> </a></li>
+          <li> <a href="/login" class="anchor-link"> <button class="btn btn-info navbar-btn"> Log In </button> </a></li>
+        </ul>
+      </div>
+      </div>
+  </nav>
+
+<% end %>

@@ -1,0 +1,66 @@
+<li id="activity-<%= activity.id %>">
+    <%= link_to (activity.user) do %>
+      <span class="user"><%= activity.user.username.capitalize %> 
+        <% if !activity.finished_at? %>
+          <i class="fa fa-circle" style="color:#27e733"> </i>
+        <% end %>
+      </span>
+      <div class="avatar">
+        <div>
+          <% if activity.user.picture? %>
+            <%= image_tag activity.user.picture.thumb_small.url %>
+          <% else %>
+            <%= image_tag 'default-thumb-50.png' %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <span id="rating-<%= activity.rating.id %>" class="note" style=""> 
+      <%= activity.rating.value %>
+    </span>
+    <div class ="text-center rate-note">
+    <%= render(partial: 'activities/rate_form', locals: {post: activity} ) if current_user and !current_user? activity.user %>
+    </div>
+    <span class="content">
+     <h4> <%= link_to activity.action.content.capitalize, '../lounges/'+activity.action.content %> </h4>
+     <div style="font-size:18px; color:#555"> <%= activity.content %> </div>
+     <%  if activity.picture? %>
+       <a href="#img-preview-modal" data-keyboard="true" data-toggle="modal" onclick="previewLargeImage('<%= activity.picture.url %>', '#img-preview')">
+        <%= image_tag activity.picture.activity.url, class: "rounded-edges large-preview" %>
+       </a>
+     <% end %>
+    </span>
+
+    <span class="timestamp">
+      Started <%= time_ago_in_words(activity.created_at) %> ago.
+      <% if !activity.finished_at? && !current_user?(activity.user) && !current_user.active? %>
+        <a href="#activity-form" data-toggle="modal" data-action="<%= activity.action.content %>" data-referrer="<%= activity.user.username %>" class="join-user">
+          <i class="fa fa-user-plus"> Join </i>
+        </a>
+      <% end %>
+      <% if activity.finished_at %>
+        <span class="timestamp-finished">
+        <i class="fa fa-clock-o"> </i> <%= distance_of_time_in_words(activity.created_at, activity.finished_at)%>
+        </span>
+      <% end %>
+      <br>
+      <%= link_to (activity), style:"color:#39a8bc" do %>
+        <i class="fa fa-comment"> </i>
+        <%= activity.comments.count %> Comments
+      <% end %>
+
+      <% if current_user?(activity.user) %>
+        <a href="#btn-<%= activity.id %>" data-toggle="modal">Delete</a>
+
+        <div class="epic-modal modal" id="btn-<%= activity.id %>" tab-index="-1" role="dialog" aria-hidden="true">
+           <div class="small modal-content" >
+                <div class="epic-modal-header"><h4 class="form-header"> Are you sure? </h4></div>
+                  <%= link_to "Delete", activity, method: :delete, class:"btn-post prompt-btn delete" %>
+                  <a href ="#" data-dismiss="modal" class="btn-post prompt-btn">Cancel</a>
+                  <p style="padding-top:5px"> Tracked time will be removed for this instance </p>
+           </div>
+        </div>
+      <% end %>
+    </span>
+</li>
+

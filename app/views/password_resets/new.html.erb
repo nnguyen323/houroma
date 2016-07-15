@@ -1,0 +1,19 @@
+<%= stylesheet_link_tag :landing_pages %>
+
+<% provide(:title, "Forgot Password") %>
+
+  <div class="center-form">
+    <div style="padding-bottom:30px">
+	    <h2 class="text-center" style="padding-bottom:30px">Forgot password</h2>
+			<%= form_for(:password_reset, url: password_resets_path) do |f| %>
+				<%= f.label :email %>
+				<%= f.email_field :email, class: 'form-control' %>
+				<%= f.submit "Submit", class: "btn btn-primary" %>
+			<% end %>
+		</div>
+		<hr style="border:1px solid #ccc">
+		<div class="">
+			<%= link_to "Log In", login_path, class: "btn btn-info"%>
+		</div>
+
+	</div>

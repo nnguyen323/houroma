@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: "tennis"
+
+two:
+  content: "rockclimbing"
+
+three:
+  content: "singing"
+
+four:
+  content: "shipwrecking"

@@ -1,0 +1,2 @@
+$("#post_<%=@rating.id%>").html(
+  "<%= escape_javascript(render('activities/rate_create', rating: @rating)) %>");

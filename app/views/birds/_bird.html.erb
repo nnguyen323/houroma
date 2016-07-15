@@ -1,0 +1,22 @@
+<li style="height:50px; margin-bottom:10px">
+	<div class="avatar">
+		<% if bird.user.picture? %>
+		  <%= image_tag bird.user.picture.thumb_small.url %>
+		<% else %>
+		  <%= image_tag 'default-thumb-50.png' %>
+		<% end %>
+	</div>
+	<div class="nest-index-text" style="padding-left:5px">
+	<%= link_to bird, disable_with: 'deleting...', method: :delete, style:"text-decoration:none" do %> 
+	  <i class="fa-minus-circle fa remove-nestling"></i> 
+	<% end %>
+		<% if bird.user.activity && bird.user.active? %>
+			<i class="fa fa-bicycle faa-passing animated" style="color:#00cc00"> </i>
+			<%= link_to bird.user.username, bird.user %>
+		<% else %>	
+			<i class="fa fa-bicycle" style="color:#999900"> </i>
+	  	<%= link_to bird.user.username, bird.user %>
+		<% end %>
+	</div>
+
+</li>

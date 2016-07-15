@@ -1,0 +1,62 @@
+<div class="row" style="padding-top:5px; padding-bottom:5px; border-top:1px solid #eee	">
+  <span class ="rate-comment">
+    <%= render(partial: 'activities/rate_form', locals: {post: comment} ) if current_user and !current_user? comment.user %>
+  </span>
+  <%= link_to (comment.user) do %>
+  	<span class="user"><%= comment.user.username.capitalize %> 
+  	</span>
+  	<div class="avatar">
+  	  <div>
+  	    <% if comment.user.picture? %>
+  	      <%= image_tag comment.user.picture.thumb_small.url %>
+  	    <% else %>
+  	      <%= image_tag 'default-thumb-50.png' %>
+  	    <% end %>
+  	  </div>
+  	</div>
+  <% end %>
+  <% if comment.user.active? %>
+    <%= link_to (comment.user.activity) do %>
+    	<span style="background:rgba(200,200,200,.1); padding:2px 10px 2px 10px; border-radius:10px">  
+    		<i class="fa fa-circle" style="color:#27e733"> </i> 
+    		<%= comment.user.activity.action.content %> 
+    	</span>
+  	<% end %>
+  <% end %>
+
+	<p style="margin-bottom:0px; word-wrap: break-word; padding-right:30px"> <%= comment.content %> </p>
+  <% if comment.depth and comment.depth < 4 and !current_user? comment.user %>
+  	<%= form_for(@comment = Comment.new) do |f| %>
+  	  <button class="post post-btn" type="button" data-toggle="collapse" data-target="#reply-field-<%= comment.id %>"> Reply</button>
+      <span class="post">|</span>
+      <span id="rating-<%= comment.rating.id %>" class="post" style="color:#337ab7">
+        <span> <%= comment.rating.value %> </span>
+      </span> 
+      <span class ="post"> Score -</span>
+      <span class ="post"> <%= time_ago_in_words(comment.created_at) %> ago</span>
+
+  	  <div id ="reply-field-<%= comment.id %>" class="collapse" style="width:400px" >
+  	  	<%= f.hidden_field :activity_id, value: @activity.id %>
+  	  	<%= f.hidden_field :parent_id, value: comment.id %>
+  	  	<%= f.text_area :content, placeholder: "your message", autofocus: "autofocus", type:"text", class:"form-control", style:"margin-top:5px"  %>
+  	  	<button style="margin-top:-15px" class="btn btn-success btn-sm" type="submit"> Post </button>
+  	  </div>
+  	<% end %>
+  <% else %>
+    <div>
+      <span id="rating-<%= comment.rating.id %>" class="post" style="color:#337ab7">
+        <span> <%= comment.rating.value %> </span>
+      </span> 
+      <span class ="post"> Score -</span>
+      <span class ="post"> <%= time_ago_in_words(comment.created_at) %> ago</span>
+    </div>
+  <% end %>
+
+
+	<% if comment.comments.any? %>
+	  <button class="post post-btn" type="button" data-toggle="collapse" data-target="#hide-comments-<%=comment.id%>"> Hide/Show </button>
+	  <div id="hide-comments-<%= comment.id %>" class="collapse in" style="padding-left:60px">
+	    <%= render comment.comments if comment.comments.any? %>
+	  </div>
+	<% end %>
+</div>

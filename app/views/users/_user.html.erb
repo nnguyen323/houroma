@@ -1,0 +1,14 @@
+<li>
+	<div class ="avatar">
+	  <% if user.picture? %>
+	    <%= image_tag user.picture.thumb_small.url %>
+	  <% else %>
+	    <%= image_tag 'default-thumb-50.png' %>
+	  <% end %>
+	</div>	
+  <%= link_to user.username, user %>
+  <% if current_user.admin? && !current_user?(user) %>
+  	| <%= link_to "delete", user, method: :delete,
+  								  data: { confirm: "Are you sure?" } %>
+  <% end %>
+</li>

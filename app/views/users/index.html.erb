@@ -1,0 +1,17 @@
+<% provide(:title, 'All users') %>
+
+<section>
+	<div class ="col-md-4 col-md-offset-1 large-info">
+		<h1 class="feed-header text-center">All users</h1>
+		<ul class="users">
+		  <%= render @users %>
+		</ul>
+		<%= will_paginate %>
+	</div>
+	<div class ="col-md-5 col-md-offset-1 large-info">
+		<h1 class="feed-header text-center">Latest Activities</h1>
+		<ul class="activities">
+		  <%= render @activities %>
+		</ul>
+	</div>
+</section>

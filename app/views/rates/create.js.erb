@@ -1,0 +1,5 @@
+$("#post_<%=@rating.id%>").html(
+  "<%= escape_javascript(
+    render(@rate.up ? 'activities/rate_up_change' : 'activities/rate_down_change',
+     {rate: @rate, rating: @rating})) %>");
+

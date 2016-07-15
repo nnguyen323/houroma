@@ -1,0 +1,12 @@
+<% @user ||= current_user %>
+<div class="stats">
+  <div class="text-center">
+    <a href="<%= trackers_user_path(@user) %>" class="btn btn-post faa-parent animated-hover">
+      <i class="fa fa-star faa-passing faa-slow"> </i>
+      <strong id="trackers">
+        <%= @user.trackers.count %>
+      </strong>
+      Trackers
+    </a>
+  </div>
+</div>

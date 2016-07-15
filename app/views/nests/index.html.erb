@@ -1,0 +1,66 @@
+<% provide(:title, "Nests") %>
+
+<script>
+  var ready = function() {
+    var engine_actions = new Bloodhound({
+        datumTokenizer: function(d) {
+            console.log(d);
+            return Bloodhound.tokenizers.whitespace(d.content);
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: '/activities/autocomplete?query=%QUERY',
+            wildcard:'%QUERY'
+        }
+    });
+    var promise = engine_actions.initialize();
+    $('#search-action').typeahead(null, {
+        name: 'actions',
+        source: engine_actions.ttAdapter()
+    });
+  }
+  if(!nest_hound_engine) {
+    $(document).ready(ready);
+    nest_hound_engine = true;
+  }
+</script>
+
+<script type = "text/javascript">
+$(document).ready(function() {
+	colorChanger();
+});
+	function colorChanger() {
+		 	var colors = ['#0099cc', '#55aaee', "#005399", "#333399", "#2277ee", "#3366cc", "#773344", "#ee5577", "#000066", "#5555bb","#111177","#1177dd", "#551122", "#0077aa", "#dd4477","#44aadd"]
+		 	var random_color = colors[Math.floor(Math.random() * colors.length)];
+		 	cards = document.getElementsByClassName('nest-card');
+		 	for(var i in cards) {
+		 		if(cards[i] && cards[i].style)
+		 		{
+		 			cards[i].style.backgroundColor = colors[i % colors.length];
+		 		}
+		 	}
+	}
+
+</script>
+<!-- First section nests showcase -->
+<section class="nest-town">
+  <div class="row text-center">
+  	<%= render @nests %>
+  </div>
+</section>
+<!-- New nest button -->
+<section>
+  <div class="container text-center" style="padding-top:10px">
+    <button href="#nest-form" data-toggle="modal" class="btn btn-success btn-lg">
+      <i class="fa fa-users"> Create Nest </i>
+    </button>
+      <a href="/help/#nests" > <button class="btn btn-info btn-lg"> Confused?</i> </button> </a>
+  </div>
+</section>
+
+<!-- Something else -->
+<section>
+
+</section>
+
+<%= render 'shared/nest_modal' %>

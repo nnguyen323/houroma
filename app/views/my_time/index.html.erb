@@ -1,0 +1,102 @@
+<% provide(:title, "My Time") %>
+
+<section class="container row" style="padding: 10px 0 30px 0" >
+  <div class ="col-xs-12 col-md-4" style="background:#fff; margin-top:10px; padding:20px; border-radius:10px" >
+    <div class ="text-center">
+    <%= link_to (current_user) do %>
+      <% if current_user.picture? %>
+        <%= image_tag current_user.picture.thumb.url, style:"border-radius:100%" %>
+      <% else %>
+        <%= image_tag 'default-thumb-120.png' %>
+      <% end %>  
+      <div class="text-center">
+        View Profile
+      </div>
+    <% end %>
+    </div>
+    <div class="text-center my-time-active">  
+      <% if current_user.active? %>
+        <%= link_to(current_user.activity) do %>
+          <h3 style="font-weight:bold; color:#449D44"> 
+            <span> 
+            <%= current_user.activity.action.content.capitalize %>  
+             </span> 
+          </h3> 
+          <% end %>
+          <p>
+            for <%= distance_of_time_in_words(current_user.activity.created_at, Time.now)%>
+          </p>
+      <% else %> <!-- Not Active -->
+          <h3 class="text-center"> 
+            <span style="color:rgb(180,180,50)">
+              <i class="fa fa-bicycle"> </i>
+              Not Active
+            </span> 
+          </h3>
+      <% end %>
+    </div>
+  </div>
+
+  <div class ="col-xs-12 col-md-7 col-md-offset-1 text-center my-time-info" >
+    <h2>
+     <%= link_to(current_user) do %> 
+      <%= current_user.username.capitalize %> 
+     <% end %>
+     <i class="fa fa-clock-o"> </i> 
+     Time Page
+    </h2>
+    <h3> Total Time: <span> <%= @total_hours %> Hours </span> </h3>
+  </div>
+</section>
+
+
+<section class="row container" style="padding-bottom:150px">
+  <div class='col-md-12'>
+    <!-- Nav tabs -->
+    <ul class="text-center nav nav-tabs nav-justified" role="tablist">
+      <li role="presentation" class="active">
+        <a href="#all-time" aria-controls="all-time" role="tab" data-toggle="tab">All Time</a>
+      </li>      
+      <li role="presentation">
+        <a href="#weekly"  aria-controls="weekly" role="tab" data-toggle="tab">Weekly</a>
+      </li>
+      <li role="presentation">
+        <a href="#today" aria-controls="today" role="tab" data-toggle="tab">Today</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content tabfix">
+      <!-- all-time -->
+      <div role="tabpanel" class="tab-pane active" id="all-time">
+        <%= bar_chart charts_total_time_path, height: '500px', library: {backgroundColor: 'transparent', animation: {startup: 'true', duration: '2000', easing: 'out'}, vAxis: {title: ""}, hAxis: {title: 'Total Time (hours)'}, bar: {groupWidth: '25'}, title: "Top All Time Topics"} %>
+        </div>     
+      <div role="tabpanel" class="tab-pane row" id="weekly">
+        <div id="toplist" class='col-md-3 large-info my-time-text' style="padding-bottom:0;">
+        <h4 style="padding-top:10px; color:#3399ff" class="text-center"> Weekly Top </h4>
+             <ol>
+               <% @week_data.each do |a| %>
+                  <li><p><%= link_to a[:content], "/lounges/#{a[:content]}/" %> <emp><%= a[:total_time] %> hours</emp></p></li>
+               <% end %>
+             </ol>
+        </div> 
+        <div class="col-md-9" style="margin-top:25px"> <%= pie_chart charts_weekly_time_path, height: '500px', library: {backgroundColor: 'transparent', vAxis: {title: ""}, hAxis: {title: 'Total Time (hours)'}, bar: {groupWidth: '25'}} %> 
+        </div>           
+      </div>
+      <!-- today -->
+      <div role="tabpanel" class="tab-pane row " id="today">
+        <div id="toplist" class='col-md-3 large-info my-time-text' style="padding-bottom:0;">
+          <h4 style="padding-top:10px; color:#3399ff" class="text-center"> Daily Top </h4>
+             <ol>
+               <% @day_data.each do |a| %>
+                  <li><p><%= link_to a[:content], "/lounges/#{a[:content]}/" %> <emp><%= a[:total_time] %> hours</emp></p></li>
+               <% end %>
+             </ol>
+        </div>  
+
+        <div class="col-md-9" style="margin-top:25px"> <%= timeline charts_timeline_from_day_path(date: 24.hours.ago, username: current_user.username), height: '500px' %> 
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

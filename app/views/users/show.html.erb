@@ -1,0 +1,93 @@
+<% provide(:title, @user.username.capitalize) %>
+
+    <section class="container text-center row">
+      <div class ="large-info col-md-4 row" style="border-radius:30px">
+        <div class="avatar" style="position:absolute; padding-top:10px"> 
+        </div>
+
+        <h2> <%= @user.username.capitalize %>  </h2>
+          <h5> <b>Topics:</b> <%= @user.activities.count %> </h5>        
+
+          <% if @user.picture? %>
+             <a href="#img-preview-modal" data-keyboard="true" data-toggle="modal" onclick="previewLargeImage('<%= @user.picture.url %>', '#img-preview')">
+                <%= image_tag @user.picture.thumb.url, style:"border-radius:100%", class:"large-preview" %>
+             </a>
+          <% else %>
+            <%= image_tag 'default-thumb-120.png' %>
+          <% end %>
+          <hr>
+          <div>
+            <%= render 'shared/stats' %>
+          </div>
+          <div class="col-xs-6 col-xs-offset-3" style="padding-top:10px">
+            <%= render 'track_form' if logged_in? %>
+          </div>
+     </div>
+
+     <div class ="large-info col-md-7 col-md-offset-1" style="padding-top:1px; border-radius:30px">
+      <% if @user.active? %>
+        <h2> Current Status: 
+          <span style="color:rgb(50,180,50)"> 
+            <%= @user.activity.action.content.capitalize %>
+          </span> 
+      
+          <h4 class="profile-time"> Time so far:<span style="color:rgb(50,180,50)"> <%= distance_of_time_in_words(@user.activity.created_at, Time.now)%> </span> 
+          </h4>
+        </h2>
+        <div style="color:#777">
+          Rating:
+          <span style="color:#3399ff">
+            <%= @user.activity.rating.value %>
+          </span>
+          |
+          <span>
+          <%= link_to (@user.activity), style:"color:#39a8bc" do %>
+              <i class="fa fa-comment"> </i>
+              <%= @user.activity.comments.count %> Comments
+            <% end %>
+          </span>
+        </div>
+        <hr>
+        <div>
+          <div class="small-info" >
+            <h4> <%= @user.activity.content %> </h4>
+          </div>
+          <div>
+            <a href="#img-preview-modal" data-keyboard="true" data-toggle="modal" onclick="previewLargeImage('<%= @user.activity.picture.url %>', '#img-preview')">
+            <%= image_tag @user.activity.picture.url, class: "rounded-edges large-preview" if @user.activity.picture %>
+            </a>
+          </div>
+        </div>
+
+      <% else %>
+          <div class = "profile-content-unactive text-center">
+             <h2> Current Status: <span style="color:rgb(180,180,50)">Not Active</span> </h2>
+          </div>
+      <% end %>
+     </div>
+    </section>
+
+    <section class="row container">   
+      <h3 class='text-center'>Most Recent Topics </h3>      
+      <div> <%= timeline charts_last_activities_path(username: @user.username)%> </div>
+    </section>
+
+    <section class="row container" style="margin-top:-80px">
+      	<div class="col-md-8 col-md-offset-2 large-info">
+          <h3 class="text-center feed-header">History </h3>
+          <% if @user.activities.any? %>
+            <h3>Completed Topics (<%= @user.active ? @user.activities.count-1 : @user.activities.count %>)</h3>
+            <ol class="activities">
+              <% @activities.each do |item| %>
+                <% if item.finished_at? %>
+                    <%= render item %>
+                <% else %>
+                <% end %>
+              <% end %>
+            </ol>
+            <%= will_paginate @activities %>
+          <% end %>
+          </div>
+      </section>
+</div>
+

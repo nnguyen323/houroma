@@ -1,0 +1,109 @@
+<% provide(:title, "Help") %>
+<%= stylesheet_link_tag :help %>
+<section class = "title-block">
+     <div class="text-center">
+       <h1 style="padding-bottom:0px">  hour<i class="fa fa-clock-o"> </i>ma - a short introduction </h1>
+       <p> Because time is precious. </p>
+
+     </div>	
+</section>
+<section id="intro" class="help-block" style ="background:rgb(94,205,205); color:#000">
+     <div class="text-center">
+       <h1> What is it? </h1>
+       <p> Houroma is an app made with time in mind.</p>
+       <p> <span class="border-word-white">Have you ever questioned how you spend your time?</span> </p>
+       <p> Perhaps how the rest of the world spends it? </p>
+       <p> <span class="border-word-white"> Have you ever wanted to compare with your friends?</span> </p>
+       <p> How about with a celebrity? </p>
+       <p> <span class="border-word-white">Now you can</span> </p>
+     </div>	
+</section> 
+<section id="topics" class="help-block" style ="background:#5c0e15; color:#fff"> <!--94,205,205 000-->
+     <div class="text-center">
+       <h1> Topics </h1>
+       <p> Topics make up houroma </p>
+       <p> <span class="border-word-black">You can use Houroma to track time for any topic</span> </p>
+       <p> Press the <%= image_tag('start-button.png') %> button located on every page to start one</p>
+
+       <p> <span class="border-word-black"> Leave any message but make sure to include one hashtag word</span> </p>
+        <%= image_tag('modal.png') %>
+       <p> <span class="border-word-black">Press start and that hashtag becomes your activity name</span> </p>
+
+       <p> You are now <span class="border-word-black">active</span> and your time is being tracked by houroma </p>
+
+       <p> Activities or topics will only <span class="border-word-black"> stop</span> when pressing the same button used to start </p>
+
+       <p><span class="border-word-black">After you have gone "active" you do not need to remain logged in to track time</span> </p>
+       <p> Feel free to see how much time you spend towards #sleep </p>
+     </div>	
+</section>
+<section id="stats" class="help-block" style ="background:#FFF;">
+     <div class="text-center">
+       <h1 style="color:#5c0e15"> My Time </h1>
+       <div style="color:#333">
+         <p> Oh my, where has all my time gone?</p>
+
+         <p> The "My Time" page contains information for just you</p>
+
+         <p> here you can see how your time is being spent</p>
+       </div> 
+     </div>	
+</section>
+
+<section id="nests" class="help-block" style ="background:#222244; color:rgb(205,238,255)">
+     <div class="text-center">
+       <h1> Nests </h1>
+       <div style="color:#fff">
+         <p> Tracking your own time has little meaning with nothing to compare against</p>
+         <p> <span class="border-word-blue"> Compare time for any activity or topic with anyone by creating nests </span></p>
+
+         <p> Add a person (anyone on houroma!) to a nest </p>
+
+         <p> <span class="border-word-blue"> Your nests are personal to you. No one else can see them! </span> </p>
+       </div>
+     </div>	
+</section>
+<section id="rooms" class ="help-block" style ="background:#111122; color:#bbdddd">
+     <div class="text-center">
+       <h1> Topic Lounge </h1>
+       <div style="color:#fff">
+         <p> <span class="border-word-blue"> Find others with similar interests </span> </p>
+         <p> Share your time not with the world </p>
+         <p> <span class="border-word-blue">But with those that do what you do</span> </p>
+         <p> After starting a topic, you will be placed into its respective lounge</p>
+         <p> <span class="border-word-blue">Here you can connect with other like-minded users</span> </p>
+         <p> Everyone in the world active in the same topic will appear here</p>
+         <p> <span class= "border-word-blue"> (Auto re-route can be disabled in settings) </span> </p>
+
+       </div>
+
+     </div>	
+</section>
+<section id="feedback" class ="help-block" style ="background:#bcbcdf; color:#3434aa">
+     <div class="text-center">
+       <h1> Feedback </h1>
+       <div style="color:#333">
+         <p> Want to help us improve houroma? </p>
+         <p>  Start a <span class="border-word-white"> #feedback</span> topic and leave any comments! </p>
+       </div>
+
+     </div> 
+</section>
+<!-- sign up section -->
+<% if !logged_in? %>
+  <section id="signup" class="help-block" style ="background:#FFF">
+       <div class="text-center">
+         <h1> Welcome to hour<i class="fa fa-clock-o"> </i>ma </h1>
+         <div style="color:#333">
+           <p style="margin-top:-70px; padding-bottom:50px"> Lets get active</p>
+          <%= link_to "Register", signup_path, class:"btn btn-primary btn-lg" %>
+          <%= link_to "Sign In", login_path, class:"btn btn-primary btn-lg" %>
+           <p style="padding-bottom:100px"> </p>
+
+         </div> 
+
+       </div> 
+  </section>
+<% end %>
+<section style="padding-bottom:200px">
+</section>

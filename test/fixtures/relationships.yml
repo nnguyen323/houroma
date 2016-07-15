@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+one:
+  tracker: michael
+  tracked: lana
+
+two:
+  tracker: michael
+  tracked: mallory
+
+three:
+  tracker: lana
+  tracked: michael
+
+four:
+  tracker: archer
+  tracked: michael

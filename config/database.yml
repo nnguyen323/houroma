@@ -1,0 +1,28 @@
+# SQLite version 3.x
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem 'sqlite3'
+#
+development:
+  adapter: postgresql
+  encoding: utf8
+  database: socialtown_development
+  host: localhost
+  pool: 5
+  timeout: 5000
+  username: prinistae
+  password: p3231
+
+test:
+  adapter: postgresql
+  encoding: utf8
+  database: socialtown_test
+  host: localhost
+  pool: 5
+  timeout: 5000
+  username: prinistae
+  password: p3231
+#production:
+  #<<: *default
+  #database: db/production.sqlite3

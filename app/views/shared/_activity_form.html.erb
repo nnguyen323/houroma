@@ -1,0 +1,61 @@
+
+<script type ="text/javascript">
+  function change_icon_on(id)
+  {
+    var icon = document.getElementById(id);
+    var btn = document.getElementById('btn-text');
+    //if( icon.className == "btn-stop-text fa fa-thumbs-o-up")
+      icon.className = "fa fa-ban faa-flash animated"
+      btn.innerHTML = " Stop"
+  }
+  function change_icon_off(id, name)
+  {
+    var icon = document.getElementById(id);
+    var btn = document.getElementById('btn-text');
+    //if( icon.className == "btn-stop-text fa fa-thumbs-o-down")
+      icon.className = "fa fa-bicycle faa-passing animated faa-slow"
+      btn.innerHTML = " " + name
+  }
+</script>
+
+<% if current_user and current_user.active? %>
+  <%= form_for(current_user.activity) do |f| %>
+  <button type ="submit" class="btn-epic btn-epic-stop btn-outline btn-stop-outline" onmouseleave="change_icon_off('thumb-icon', '<%= current_user.activity.action.content.capitalize  %>' );" onmouseover="change_icon_on('thumb-icon');" style="color:#222">
+
+
+    <i id="thumb-icon" class="fa fa-bicycle faa-passing animated faa-slow">  </i> 
+    <span id="btn-text"> <%= current_user.activity.action.content.capitalize  %> </span>
+
+  </button>
+  <% end %>
+
+<% else %>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= form_for(@activity = Activity.new, html: { multipart: true }) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+        <div class="field">
+          <div class ="activity-img-container">
+            <%= image_tag '', id:'activity-preview', style:"border-radius:5px; visibility:hidden" %>
+          </div>
+          <%= f.text_area :content, placeholder: "Your message...e.g. I am playing #minecraft", class: "activity-form", autofocus: "autofocus" %>
+            
+        </div>
+        
+        <div class ="col-xs-6" style="margin-top:-10px;">
+            <button type ="submit" class="btn-post">
+              <i class="fa fa-bicycle"> </i> Start
+            </button>
+        </div>
+       
+        <div class="col-xs-6" style="margin-top:-10px;">
+             <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png', onchange:"previewImage(this, '#activity-preview', 50, 50)", id:'activity-file', style:"display:none" %>
+          <button type="button" id="activity-file-button" class="btn btn-post" style="padding:0 5px 0 5px">
+            <i class="fa fa-image"> </i> Image
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+<% end %>

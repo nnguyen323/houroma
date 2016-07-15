@@ -1,0 +1,19 @@
+<% if current_user %>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= form_for(@nest = Nest.new) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+        <div class="field">
+            <div class="form-group">
+              <div class="input-group input-group">
+                <span class="input-group-addon hash-tag"> <button class="nest-create" type="submit"> <i class="fa fa-plus-circle"> </i></button></span>
+                    <%= f.text_field :title, placeholder: "Topic Name", autofocus: "autofocus", style:"border-radius:5px; padding-left:5px", type:"text", id:"search-action", class:"form-control"  %>
+              </div>
+            </div>
+        </div>
+ 
+      <% end %>
+    </div>
+  </div>
+
+<% end %>

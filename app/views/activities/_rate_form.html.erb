@@ -1,0 +1,42 @@
+<% @rating = post.rating %>
+<% @rate = @rating.rating?(current_user) %>
+<span id='post_<%=@rating.id%>'> 
+		<% if !@rate %> <!-- Case: User has not rated -->
+      <%= render(partial: 'activities/rate_create', locals: {rating: @rating}) %>
+    <% elsif @rate.up %> <!-- Case: User has already rated up -->
+      <%= render(partial: 'activities/rate_up_change', locals: {rating: @rating, rate: @rate}) %>
+    <% else %> <!-- Case: User has already rated down -->
+  		<%= render(partial: 'activities/rate_down_change', locals: {rating: @rating, rate: @rate}) %>
+    <% end %>
+</span>
+<script>
+// mercy lordsire
+$(document).ready(function() {
+  <% if @rate %> 
+    rates['rating-<%= post.rating.id %>'] = <%= post.rating.value + (@rate.up ? -1 : 1) %>;
+  <% else %>
+    rates['rating-<%= post.rating.id %>'] = <%= post.rating.value %>;
+  <% end %>
+});
+  function plus_one(id)
+  {
+      var icon = document.getElementById(id);
+      var original = rates[id];
+      original += 1;
+      icon.innerHTML = original;
+  }
+  function minus_one(id)
+  {
+    var icon = document.getElementById(id);
+    var original = rates[id];
+    original -= 1;
+    icon.innerHTML = original;
+  }
+
+  function do_nothing(id)
+  {
+      var icon = document.getElementById(id);
+      var original = rates[id];
+      icon.innerHTML = original;
+  }
+</script>

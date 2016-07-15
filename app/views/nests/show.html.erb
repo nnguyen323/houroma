@@ -1,0 +1,68 @@
+
+<section class="row container text-center large-info">
+	
+	<h1 style="color:rgba(50,55,90,.5)"> <%= @nest.title.capitalize %> </h1>
+	<a style="margin-right:100px" href='/nests/'> <i class="fa fa-angle-left"></i> Back to nests</a> 	
+	<a href="#delete-nest" data-toggle="modal">Delete Nest</a>
+	<!-- tiny confirm delete nest modal -->
+	<div class="epic-modal modal" id="delete-nest" tab-index="-1" role="dialog" aria-hidden="true">
+	   <div class="small modal-content" >
+	        <div class="epic-modal-header"><h4 class="form-header"> Are you sure? </h4></div>
+	        	<%= link_to "Delete", @nest, method: :delete, class:"btn-post prompt-btn delete" %>
+	          <a href ="#" data-dismiss="modal" class="btn-post prompt-btn">Cancel</a>
+	          <p style="padding-top:5px"> All users in the nest will be lost </p>
+	   </div>
+	</div>
+	
+	<hr>
+</section>
+<section class="row container">
+  <div class='col-md-8'>
+	  <!-- Nav tabs -->
+	  <ul class="text-center nav nav-tabs" role="tablist">
+	    <li role="presentation" class="active">
+	    	<a href="#today" aria-controls="today" role="tab" data-toggle="tab">Today</a>
+	    </li>
+	    <li role="presentation">
+	    	<a href="#weekly"  aria-controls="weekly" role="tab" data-toggle="tab">Weekly</a>
+	    </li>
+	    <li role="presentation">
+	    	<a href="#all-time" aria-controls="all-time" role="tab" data-toggle="tab">All Time</a>
+	    </li>
+	  </ul>
+
+	  <!-- Tab panes -->
+	  <div class="tab-content tabfix">
+	    <div role="tabpanel" class="tab-pane active" id="today">
+	        <%= pie_chart charts_nest_time_path(date: 24.hours.ago, nest_id: @nest.id), height: '500px', width:'200px', library: {pieHole: 0.4, backgroundColor:'transparent', legend:{ position:'right'}}, colors: [ '2DC13A', '57C32F', '82C531', 'BAC834',  'C6B932', 'C4A930', 'BE892B', 'BC7928'] %>
+	    </div>
+	    <div role="tabpanel" class="tab-pane" id="weekly">
+	        <%= pie_chart charts_nest_time_path(date: 7.days.ago, nest_id: @nest.id), height: '500px', library: {pieHole: 0.4, backgroundColor:'transparent', legend:{ position:'right'}}, colors: [ '9D3A2E', 'A45934', 'A76937', 'AA793B',  'AE883E', 'B19841', 'B4A845', 'AAB747'] %>			    	
+	    </div>
+	    <div role="tabpanel" class="tab-pane" id="all-time">
+	        <%= pie_chart charts_nest_time_path(nest_id: @nest.id), height: '500px', library: {pieHole: 0.4, backgroundColor:'transparent', legend:{ position:'right'}}, colors: ['912F66', '873092', '6F2D8F', '562B8D','3E288A','2E4490','376399','4081A2']	 %>	
+	    </div>
+	  </div>
+  </div>
+
+	<div class="col-md-offset-1 col-md-3">
+		<div class="large-info" style="padding:30px 50px 50px 50px">
+		<h3 class='text-center' style='padding-bottom:30px; color:rgba(50,55,90,.7)'>Add a user</h3>
+			<%= form_for(@bird = Bird.new) do |f| %>
+			  <div class="form-group">
+					<%= f.text_field :user_id, placeholder: " Enter Username", id:"search-user", type:"text", class:"form-control" %>
+			  </div>
+				<%= f.hidden_field :nest_id, value: @nest.id %>
+				<%= f.submit "Add to nest", class: "btn btn-primary" %>
+			<% end %>
+		</div>		
+		<div class="large-info" style="padding:30px">
+			<h3 class='text-center' style="color:rgba(50,55,90,.7)"> Nestlings (<%= @nest.birds.count %>) </h3>
+			<ol style='list-style:none; margin-left:-40px; margin-top:30px'>
+				<%= render @nest.birds %>
+			</ol>
+		</div>
+
+		
+	</div>
+</section>

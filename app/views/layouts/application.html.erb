@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content ="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="A time management platform designed to increase widespread productivity. Find out what others are doing. Establish connections and help share how the world spends its time.">
+	<meta name="author" content="Houroma">
+	<meta name="keywords" content = "time, saving, productivity, tracking, trackers, track, app, prinistae, work, improve, houroma, hour">
+  <meta name="google-site-verification" content="ntdZ4spq68a7wRP_kXUWkPwU1mAZyiXnI-yf3Hi3q5Y" />
+  
+  <title><%= full_title(yield(:title)) %></title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>  
+  <%= csrf_meta_tags %>
+  <%= favicon_link_tag 'favicon.ico' %>
+</head>
+<body>
+<%= render 'layouts/header' %>
+<% flash.each do |message_type, message| %>
+	<div class ="alert alert-<%= message_type %>"><%= message %></div>
+<% end %>
+ <!-- <%= debug params if Rails.env.development? %> -->
+<%= yield %>
+</body>
+</html>
